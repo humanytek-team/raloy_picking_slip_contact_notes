@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <template id="report_picking_contact_notes" inherit_id="stock.report_delivery_document">
+            
+            <div name="customer_address" position="replace">
+
+                <div class="row" name="customer_address">
+                    <div class="col-xs-4 pull-left">
+                        <div>
+                            <span><strong>Customer Address:</strong></span>
+                        </div>
+                        <div t-if="o.move_lines and o.move_lines[0].partner_id" name="partner_header">
+                            <div t-field="o.move_lines[0].partner_id"
+                               t-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": True}'/>
+                        </div>
+                        <div t-if="not (o.move_lines and o.move_lines[0].partner_id) and o.partner_id" name="partner_header">
+                            <div t-field="o.partner_id"
+                               t-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": True}'/>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-4 pull-right">
+                        <b>Notas</b><br/>
+                        <span t-field="o.partner_id.comment"/>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </template>
+
+
+
+
+
+        <template id="report_picking_contact_notes2" inherit_id="stock.report_picking">
+            
+            <xpath expr="//div/div/div[2]/div[4]" position="after">
+                <!-- <b>Notas</b><br/>
+                <span t-field="o.partner_id.comment"/> -->
+                <div t-if="o.partner_id and o.partner_id.comment and o.picking_type_id.code=='outgoing'">
+                    <b>Notas</b><br/>
+                    <span t-field="o.partner_id.comment"/>
+                </div>
+            </xpath>
+
+
+        </template>
+
+
+
+    </data>
+</openerp>
